@@ -1,39 +1,20 @@
-let inputBox = document.getElementById("input-box");
-let listContainer = document.getElementById("list-container");
+let btn = document.querySelector("button");
+let colorCodeElement = document.getElementById("colorCode");
 
-function addTask() {
-  if (inputBox.value == "") {
-    alert("You Must Write Something !");
-  } else {
-    let li = document.createElement("li");
-    li.innerHTML = inputBox.value;
-    listContainer.appendChild(li);
-    let span = document.createElement("span");
-    span.innerHTML = "\u00d7";
-    li.appendChild(span);
+let hexArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
+let colorParts = [];
+
+function generateRandomColor() {
+  colorParts = [];
+  for (let i = 0; i < 6; i++) {
+    colorParts.push(hexArray[Math.floor(Math.random() * hexArray.length)]);
   }
-  inputBox.value = "";
-  saveData();
-}
-listContainer.addEventListener(
-  "click",
-  function (e) {
-    if (e.target.tagName === "LI") {
-      e.target.classList.toggle("checked");
-      saveData();
-    } else if (e.target.tagName === "SPAN") {
-      e.target.parentElement.remove();
-      saveData();
-    }
-  },
-  false
-);
-
-function saveData() {
-  localStorage.setItem("data", listContainer.innerHTML);
+  let finalColor = `#${colorParts.join("")}`;
+  document.body.style.background = finalColor;
+  colorCodeElement.textContent = finalColor;
 }
 
-function showData() {
-  listContainer.innerHTML = localStorage.getItem("data");
-}
-showData();
+// Generate initial random color
+generateRandomColor();
+
+btn.addEventListener("click", generateRandomColor);
